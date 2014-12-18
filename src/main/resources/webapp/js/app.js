@@ -34,9 +34,9 @@ appModule.controller('DashboardCtrl', ['$scope', '$q', '$filter', '$routeParams'
 
     function addCpuUsage(cpuUsage) {
         $scope.cpuUsage.push(cpuUsage);
-        if ($scope.cpuUsage.length > 120) $scope.cpuUsage = $scope.cpuUsage.slice($scope.cpuUsage.length - displayNSeconds);
+        if ($scope.cpuUsage.length > displayNSeconds) $scope.cpuUsage = $scope.cpuUsage.slice($scope.cpuUsage.length - displayNSeconds);
 
-        var xStart = 120 - $scope.cpuUsage.length;
+        var xStart = displayNSeconds - $scope.cpuUsage.length;
         for (var idx in $scope.cpuUsage) {
             $scope.cpuUsage[idx].x = xStart + parseInt(idx);
         }
@@ -68,11 +68,31 @@ appModule.controller('DashboardCtrl', ['$scope', '$q', '$filter', '$routeParams'
             }
         ],
         axes: {
-            x: {type: "linear", key: "x", min: 0, max: displayNSeconds, labelFunction: function (x) { return (displayNSeconds - x) + "s"; }},
-            y: {type: "linear", min: 0.0, max: 1.0}
+            x: {
+                type: "linear",
+                key: "x",
+                min: 0,
+                max: displayNSeconds,
+                labelFunction: function (x) {
+                    return (displayNSeconds - x) + "s";
+                }
+            },
+            y: {
+                type: "linear",
+                min: 0.0,
+                max: 1.0,
+                labelFunction: function (y) {
+                    return parseInt(y * 100) + "%";
+                }
+            }
         },
         tension: 0.7,
-        tooltip: {mode: "scrubber"},
+        tooltip: {
+            mode: "scrubber",
+            formatter: function (x, y, series) {
+                return $scope.options.axes.x.labelFunction(x) + " : " + $scope.options.axes.y.labelFunction(y);
+            }
+        },
         drawLegend: true,
         drawDots: true,
         columnsHGap: 5
