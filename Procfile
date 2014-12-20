@@ -1,0 +1,1 @@
+web: target/universal/stage/bin/spray-cpumonitor-example -Dhttp.port=$PORT $JAVA_OPTS
