@@ -1,7 +1,7 @@
 import com.typesafe.sbt.SbtNativePackager._
 import NativePackagerKeys._
 
-name := """spray-cpumonitor"""
+name := """spray-cpumonitor-example"""
 
 version := "1.0"
 
