@@ -13,7 +13,6 @@ resolvers ++= Seq(
 )
 
 libraryDependencies ++= Seq(
-  "org.fusesource"      %  "sigar"              % "1.6.4" classifier("native") classifier(""),
   "ch.qos.logback"      %   "logback-classic"   % "1.1.2",
   "com.wandoulabs.akka" %%  "spray-websocket"   % "0.1.3",
   "io.spray"            %%  "spray-json"        % "1.2.6",

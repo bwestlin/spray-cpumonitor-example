@@ -43,7 +43,6 @@ appModule.controller('DashboardCtrl', ['$scope', '$q', '$filter', '$routeParams'
     }
 
     $scope.options = {
-        stacks: [{axis: "y", series: ["user", "system"]}],
         lineMode: "cardinal",
         series: [
             {
@@ -51,17 +50,17 @@ appModule.controller('DashboardCtrl', ['$scope', '$q', '$filter', '$routeParams'
                 y: "system",
                 label: "System",
                 type: "area",
-                color: "#ff7f0e",
+                color: "#1f77b4",
                 axis: "y",
                 thickness: "2px",
                 drawDots: false
             },
             {
-                id: "user",
-                y: "user",
-                label: "User",
+                id: "process",
+                y: "process",
+                label: "Process",
                 type: "area",
-                color: "#1f77b4",
+                color: "#ff7f0e",
                 axis: "y",
                 thickness: "2px",
                 drawDots: false

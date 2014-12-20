@@ -1,13 +1,15 @@
 package se.bwestlin.cpumonitor.monitor
 
 
+import java.lang.management.ManagementFactory
+
+import com.sun.management.OperatingSystemMXBean
 import se.bwestlin.cpumonitor.http.BroadcastWS
 import se.bwestlin.cpumonitor.model.CpuUsage
 
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
 import akka.actor.{Props, Actor, ActorLogging}
-import org.hyperic.sigar.Sigar
 
 object CpuMonitor {
 
@@ -21,15 +23,17 @@ object CpuMonitor {
 class CpuMonitor extends Actor with ActorLogging {
   import se.bwestlin.cpumonitor.monitor.CpuMonitor.Measure
 
-  val sigar = new Sigar()
+  val mbsc = ManagementFactory.getPlatformMBeanServer
+  val osMBean = ManagementFactory.newPlatformMXBeanProxy(mbsc, ManagementFactory.OPERATING_SYSTEM_MXBEAN_NAME, classOf[OperatingSystemMXBean])
 
   val measureInterval = 1000.millisecond
   val measure = context.system.scheduler.schedule(measureInterval, measureInterval, self, Measure())
 
   def receive = {
     case Measure() => {
-      val cpuPerc = sigar.getCpuPerc
-      val cpuUsage = CpuUsage(cpuPerc.getUser, cpuPerc.getSys)
+      val processCpuLoad = osMBean.getProcessCpuLoad
+      val systemCpuLoad = osMBean.getSystemCpuLoad
+      val cpuUsage = CpuUsage(processCpuLoad, systemCpuLoad)
 
       context.system.eventStream.publish(cpuUsage)
     }
