@@ -32,8 +32,4 @@ libraryDependencies ++= Seq(
                                                                                                                                                                                                                                              
 Revolver.settings
 
-javaOptions in Revolver.reStart += "-Djava.library.path=./native"
-                                                                                                                                                                                                                                             
 packageArchetype.java_application
-
-javaOptions in run += "-Djava.library.path=/home/weez/Egna_projekt/spray/spray-cpumonitor/native"
