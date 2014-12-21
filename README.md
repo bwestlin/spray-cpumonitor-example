@@ -5,7 +5,7 @@ This is an example application demonstrating showing host CPU usage on a webpage
 
 It shows the total system CPU usage and the JVM-process CPU usage the last 120 seconds for the host it runs on.
 
-To see it in action now go here: [http://cpumon.herokuapp.com/]()
+To see it in action now go here: [http://cpumon.herokuapp.com/](http://cpumon.herokuapp.com/)
 It's running on [Heroku](https://www.heroku.com/) which will have the consequence of showing the total system CPU
 usage for the server being affected by other unknown applications.
 
