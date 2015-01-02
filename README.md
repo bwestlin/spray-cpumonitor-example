@@ -9,10 +9,12 @@ To see it in action now go here: [http://cpumon.herokuapp.com/]()
 It's running on [Heroku](https://www.heroku.com/) which will have the consequence of showing the total system CPU
 usage for the server being affected by other unknown applications.
 
-To trigger the JVM-process CPU usage to increase the following could be used to trigger it:
+One way to trigger an increase of the JVM-process CPU usage is to run the following:
 ```
 ab -k -c 10 -n 100 http://cpumon.herokuapp.com/
 ```
+This will run [ApacheBench](http://en.wikipedia.org/wiki/ApacheBench) which is a tool for benchmarking HTTP servers.
+
 
 The following were used building this example:
 * [scala](http://www.scala-lang.org/)
