@@ -1,7 +1,9 @@
-# Spray CPU Monitor Example #
+# Spray.io CPU Monitor Example #
 
 This is an example application demonstrating showing host CPU usage on a webpage using a
 [websocket](http://en.wikipedia.org/wiki/WebSocket).
+
+**It's currently a work in progress...**
 
 It shows the total system CPU usage and the JVM-process CPU usage the last 120 seconds for the host it runs on.
 
@@ -13,6 +15,7 @@ To trigger the JVM-process CPU usage to increase the following could be used to 
 ```
 ab -k -c 10 -n 100 http://cpumon.herokuapp.com/
 ```
+*Please be gentle though doing this since it's not very nice to [Heroku](https://www.heroku.com/)*
 
 The following were used building this example:
 * [scala](http://www.scala-lang.org/)
