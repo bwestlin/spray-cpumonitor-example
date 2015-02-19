@@ -1,6 +1,6 @@
-var appModule = angular.module('app', ['ngRoute', 'angular-websocket', 'n3-line-chart']);
+var appModule = angular.module('app', ['ngRoute', 'ngWebSocket', 'n3-line-chart']);
 
-appModule.config(['$httpProvider', 'WebSocketProvider', function($httpProvider, WebSocketProvider) {
+appModule.config(['$httpProvider', function($httpProvider) {
 
     // Handling of null responses from backend
     $httpProvider.defaults.transformResponse.push(function(data){
@@ -9,10 +9,37 @@ appModule.config(['$httpProvider', 'WebSocketProvider', function($httpProvider, 
         }
         return data;
     });
+}]);
 
-    var wsUrl = "ws://" + location.hostname + (location.port ? ":" + location.port : "") + "/";
+appModule.factory('CpuUsage', ['$websocket', function ($websocket) {
 
-    WebSocketProvider.prefix('').uri(wsUrl);
+    var wssUrl = "ws://" + location.hostname + (location.port ? ":" + location.port : "") + "/";
+    var dataStream = $websocket(wssUrl);
+
+    var cpuUsageData = [];
+    var keepNSeconds = 120;
+
+    function addCpuUsage(cpuUsage) {
+        cpuUsageData.push(cpuUsage);
+        if (cpuUsageData.length > keepNSeconds) cpuUsageData = cpuUsageData.slice(cpuUsageData.length - keepNSeconds);
+
+        var xStart = keepNSeconds - cpuUsageData.length;
+        for (var idx in cpuUsageData) {
+            if (!cpuUsageData.hasOwnProperty(idx)) continue;
+            cpuUsageData[idx].x = xStart + parseInt(idx);
+        }
+    }
+
+    dataStream.onMessage(function(message) {
+        var cpuUsage = JSON.parse(message.data);
+        addCpuUsage(cpuUsage);
+    });
+
+    return {
+        data: cpuUsageData,
+        keepNSeconds: keepNSeconds
+    };
+
 }]);
 
 appModule.config(['$routeProvider', function($routeProvider) {
@@ -26,21 +53,9 @@ appModule.config(['$routeProvider', function($routeProvider) {
         });
 }]);
 
-appModule.controller('DashboardCtrl', ['$scope', '$q', '$filter', '$routeParams', 'WebSocket', function($scope, $q, $filter, $routeParams, WebSocket) {
+appModule.controller('DashboardCtrl', ['$scope', '$q', '$filter', '$routeParams', 'CpuUsage', function($scope, $q, $filter, $routeParams, CpuUsage) {
 
-    $scope.cpuUsage = [];
-
-    var displayNSeconds = 120;
-
-    function addCpuUsage(cpuUsage) {
-        $scope.cpuUsage.push(cpuUsage);
-        if ($scope.cpuUsage.length > displayNSeconds) $scope.cpuUsage = $scope.cpuUsage.slice($scope.cpuUsage.length - displayNSeconds);
-
-        var xStart = displayNSeconds - $scope.cpuUsage.length;
-        for (var idx in $scope.cpuUsage) {
-            $scope.cpuUsage[idx].x = xStart + parseInt(idx);
-        }
-    }
+    $scope.cpuUsage = CpuUsage.data;
 
     $scope.options = {
         lineMode: "cardinal",
@@ -71,9 +86,9 @@ appModule.controller('DashboardCtrl', ['$scope', '$q', '$filter', '$routeParams'
                 type: "linear",
                 key: "x",
                 min: 0,
-                max: displayNSeconds,
+                max: CpuUsage.keepNSeconds,
                 labelFunction: function (x) {
-                    return (displayNSeconds - x) + "s";
+                    return (CpuUsage.keepNSeconds - x) + "s";
                 }
             },
             y: {
@@ -96,10 +111,5 @@ appModule.controller('DashboardCtrl', ['$scope', '$q', '$filter', '$routeParams'
         drawDots: true,
         columnsHGap: 5
     };
-
-    WebSocket.onmessage(function(event) {
-        var cpuUsage = JSON.parse(event.data);
-        addCpuUsage(cpuUsage);
-    });
 
 }]);
