@@ -1,3 +1,5 @@
+[![Codacy Badge](https://www.codacy.com/project/badge/97dd2eccd9594cc4bf65161d4e37866f)](https://www.codacy.com/public/bwestlin/spray-cpumonitor-example)
+
 # Spray.io CPU Monitor Example #
 
 This is an example application demonstrating showing host CPU usage on a webpage using a
