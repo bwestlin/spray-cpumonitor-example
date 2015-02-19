@@ -4,8 +4,8 @@ package se.bwestlin.cpumonitor.monitor
 import java.lang.management.ManagementFactory
 
 import com.sun.management.OperatingSystemMXBean
-import se.bwestlin.cpumonitor.http.BroadcastWS
 import se.bwestlin.cpumonitor.model.CpuUsage
+import se.bwestlin.cpumonitor.monitor.CpuMonitor.Measure
 
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -21,7 +21,6 @@ object CpuMonitor {
 }
 
 class CpuMonitor extends Actor with ActorLogging {
-  import se.bwestlin.cpumonitor.monitor.CpuMonitor.Measure
 
   val mbsc = ManagementFactory.getPlatformMBeanServer
   val osMBean = ManagementFactory.newPlatformMXBeanProxy(mbsc, ManagementFactory.OPERATING_SYSTEM_MXBEAN_NAME, classOf[OperatingSystemMXBean])

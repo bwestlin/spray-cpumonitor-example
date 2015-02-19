@@ -21,7 +21,9 @@ appModule.factory('CpuUsage', ['$websocket', function ($websocket) {
 
     function addCpuUsage(cpuUsage) {
         cpuUsageData.push(cpuUsage);
-        if (cpuUsageData.length > keepNSeconds) cpuUsageData = cpuUsageData.slice(cpuUsageData.length - keepNSeconds);
+        if (cpuUsageData.length > keepNSeconds) {
+            cpuUsageData = cpuUsageData.slice(cpuUsageData.length - keepNSeconds);
+        }
 
         var xStart = keepNSeconds - cpuUsageData.length;
         for (var idx = 0; idx < cpuUsageData.length; idx++) {
