@@ -24,8 +24,7 @@ appModule.factory('CpuUsage', ['$websocket', function ($websocket) {
         if (cpuUsageData.length > keepNSeconds) cpuUsageData = cpuUsageData.slice(cpuUsageData.length - keepNSeconds);
 
         var xStart = keepNSeconds - cpuUsageData.length;
-        for (var idx in cpuUsageData) {
-            if (!cpuUsageData.hasOwnProperty(idx)) continue;
+        for (var idx = 0; idx < cpuUsageData.length; idx++) {
             cpuUsageData[idx].x = xStart + parseInt(idx);
         }
     }
