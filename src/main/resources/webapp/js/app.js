@@ -13,8 +13,8 @@ appModule.config(['$httpProvider', function($httpProvider) {
 
 appModule.factory('CpuUsage', ['$websocket', function ($websocket) {
 
-    var wssUrl = "ws://" + location.hostname + (location.port ? ":" + location.port : "") + "/";
-    var dataStream = $websocket(wssUrl);
+    var wsUrl = "ws://" + location.hostname + (location.port ? ":" + location.port : "") + "/";
+    var dataStream = $websocket(wsUrl);
 
     var cpuUsageData = [];
     var keepNSeconds = 120;
