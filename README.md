@@ -1,4 +1,5 @@
 [![Codacy Badge](https://www.codacy.com/project/badge/97dd2eccd9594cc4bf65161d4e37866f)](https://www.codacy.com/public/bwestlin/spray-cpumonitor-example)
+[![Dependency Status](https://www.versioneye.com/user/projects/54f0ca9a4f3108d1fa0005a1/badge.svg?style=flat)](https://www.versioneye.com/user/projects/54f0ca9a4f3108d1fa0005a1)
 
 # Spray.io CPU Monitor Example #
 
